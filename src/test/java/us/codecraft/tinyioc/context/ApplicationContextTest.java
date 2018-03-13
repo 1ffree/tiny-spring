@@ -2,6 +2,7 @@ package us.codecraft.tinyioc.context;
 
 import org.junit.Test;
 import us.codecraft.tinyioc.HelloWorldService;
+import us.codecraft.tinyioc.message.Message;
 
 /**
  * @author yihua.huang@dianping.com
@@ -19,6 +20,8 @@ public class ApplicationContextTest {
     public void testPostBeanProcessor() throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("tinyioc-postbeanprocessor.xml");
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
+        applicationContext.publishEvent("test");
+        applicationContext.publishEvent(new Message("test"));
         helloWorldService.helloWorld();
     }
 }

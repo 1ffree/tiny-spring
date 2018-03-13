@@ -36,8 +36,10 @@ public class Cglib2AopProxy extends AbstractAopProxy {
 			this.delegateMethodInterceptor = advised.getMethodInterceptor();
 		}
 
+		// 代理对象
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+		    // 如果match匹配到 那么代理
 			if (advised.getMethodMatcher() == null
 					|| advised.getMethodMatcher().matches(method, advised.getTargetSource().getTargetClass())) {
 				return delegateMethodInterceptor.invoke(new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, args, proxy));
@@ -46,6 +48,7 @@ public class Cglib2AopProxy extends AbstractAopProxy {
 		}
 	}
 
+	// 创建一个原始的方法调用
 	private static class CglibMethodInvocation extends ReflectiveMethodInvocation {
 
 		private final MethodProxy methodProxy;

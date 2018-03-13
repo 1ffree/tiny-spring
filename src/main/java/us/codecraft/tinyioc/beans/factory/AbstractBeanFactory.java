@@ -37,12 +37,17 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
 	protected Object initializeBean(Object bean, String name) throws Exception {
 		for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+		    //初始化之前
 			bean = beanPostProcessor.postProcessBeforeInitialization(bean, name);
 		}
 
 		// TODO:call initialize method
 		for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+		    //初始化之后  对bean进行增强 原始的bean 被代理bean 的引用持有
+            Object preBean = bean;
             bean = beanPostProcessor.postProcessAfterInitialization(bean, name);
+            //断言 增强后的 bean 是原始bean的父类
+            assert preBean.getClass().isAssignableFrom(bean.getClass());
 		}
         return bean;
 	}
@@ -78,6 +83,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 		this.beanPostProcessors.add(beanPostProcessor);
 	}
 
+	// 所有的bean都是从beanDefinition中取出来的,
 	public List getBeansForType(Class type) throws Exception {
 		List beans = new ArrayList<Object>();
 		for (String beanDefinitionName : beanDefinitionNames) {

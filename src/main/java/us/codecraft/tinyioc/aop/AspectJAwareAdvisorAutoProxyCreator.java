@@ -10,15 +10,18 @@ import java.util.List;
 /**
  * @author yihua.huang@dianping.com
  */
+// 本身就是一个Bean
 public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, BeanFactoryAware {
 
 	private AbstractBeanFactory beanFactory;
 
+	//初始化之前的一次回调
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws Exception {
 		return bean;
 	}
 
+	//初始化后的一次回调 对所有的bean做一次增强
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws Exception {
 		if (bean instanceof AspectJExpressionPointcutAdvisor) {
@@ -38,12 +41,14 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
 				TargetSource targetSource = new TargetSource(bean, bean.getClass(), bean.getClass().getInterfaces());
 				advisedSupport.setTargetSource(targetSource);
 
+				//此时返回的是CGLib代理的对象 并非原始的对象
 				return advisedSupport.getProxy();
 			}
 		}
 		return bean;
 	}
 
+	//初始化的时候 注入beanFactory
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws Exception {
 		this.beanFactory = (AbstractBeanFactory) beanFactory;

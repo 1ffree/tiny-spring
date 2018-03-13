@@ -18,6 +18,7 @@ public class AspectJExpressionPointcut implements Pointcut, ClassFilter, MethodM
 
 	private String expression;
 
+	//切点表达式
 	private PointcutExpression pointcutExpression;
 
 	private static final Set<PointcutPrimitive> DEFAULT_SUPPORTED_PRIMITIVES = new HashSet<PointcutPrimitive>();
