@@ -20,6 +20,11 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
         if (bean instanceof BeanFactoryAware) {
             ((BeanFactoryAware) bean).setBeanFactory(this);
         }
+        applyPropertyValueForSetter(bean, mbd);
+        applyPropertyValuesForField(bean);
+    }
+
+    private void applyPropertyValueForSetter(Object bean, BeanDefinition mbd) throws Exception {
         for (PropertyValue propertyValue : mbd.getPropertyValues().getPropertyValues()) {
             Object value = propertyValue.getValue();
             if (value instanceof BeanReference) {
@@ -40,6 +45,9 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
                 declaredField.set(bean, value);
             }
         }
+    }
+
+    private void applyPropertyValuesForField(Object bean) throws Exception {
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(AutoWired.class)) {
                 field.setAccessible(true);
@@ -51,4 +59,5 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
             }
         }
     }
+
 }

@@ -1,7 +1,7 @@
 package us.codecraft.tinyioc.beans;
 
 /**
- * @author 邓凤麒
+ * @author winters
  * 创建时间：13/03/2018 16:42
  * 创建原因：
  **/
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 
 //此处Autowired 只适用在字段上
 
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented

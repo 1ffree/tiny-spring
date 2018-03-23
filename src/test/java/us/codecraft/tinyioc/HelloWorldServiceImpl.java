@@ -13,11 +13,16 @@ import us.codecraft.tinyioc.message.Message;
 public class HelloWorldServiceImpl implements HelloWorldService {
 
     private String text;
-
     private OutputService outputService;
 
     @AutoWired
     private ApplicationEventPublisher applicationEventPublisher;
+
+    @AutoWired
+    public HelloWorldServiceImpl(OutputService outputService, ApplicationEventPublisher applicationEventPublisher) {
+        this.outputService = outputService;
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 
     @Override
     public void helloWorld() {
