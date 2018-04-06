@@ -35,6 +35,10 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         return bean;
     }
 
+    /*
+    此方法十分重要， 在初始化bean的同时，把所有的bean
+    都传入进实现了BeanPostProcessor接口的实现类中，更新对象为process增强后的bean
+    */
     protected Object initializeBean(Object bean, String name) throws Exception {
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             //初始化之前
@@ -45,6 +49,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             //初始化之后  对bean进行增强 原始的bean 被代理bean 的引用持有
             Object preBean = bean;
+
             bean = beanPostProcessor.postProcessAfterInitialization(bean, name);
             //断言 增强后的 bean 是原始bean的父类
             assert preBean.getClass().isAssignableFrom(bean.getClass());

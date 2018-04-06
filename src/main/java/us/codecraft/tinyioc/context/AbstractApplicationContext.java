@@ -22,6 +22,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     public void refresh() throws Exception {
         loadBeanDefinitions(beanFactory);
+        //抽象应用上下文 向beanFactory注册beanPostProcessor
         registerBeanPostProcessors(beanFactory);
         //消息处理者handler 扫描所有的bean 对方法上有EventListener注解的
         beanFactory.addBeanPostProcessor(messageHandlerHolder);
@@ -40,8 +41,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
 
+    //从beanFactory中 拿出所有的 BeanPostProcessor接口的实现类
     protected void registerBeanPostProcessors(AbstractBeanFactory beanFactory) throws Exception {
         List beanPostProcessors = beanFactory.getBeansForType(BeanPostProcessor.class);
+        //全部加入到beanFactory的 beanPostProcessors 引用中去
         for (Object beanPostProcessor : beanPostProcessors) {
             beanFactory.addBeanPostProcessor((BeanPostProcessor) beanPostProcessor);
         }

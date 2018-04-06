@@ -11,6 +11,7 @@ import java.util.List;
  * 创建时间：13/03/2018 15:51
  * 创建原因：
  **/
+//实现了 beanPostProcessor接口
 public class MessageHandlerHolder implements BeanPostProcessor {
 
     private List<MessageHandlerInvocation> messageHandlers = new ArrayList<>();

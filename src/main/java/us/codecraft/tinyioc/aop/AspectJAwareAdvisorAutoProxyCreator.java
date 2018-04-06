@@ -30,9 +30,12 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
 		if (bean instanceof MethodInterceptor) {
 			return bean;
 		}
-		List<AspectJExpressionPointcutAdvisor> advisors = beanFactory
-				.getBeansForType(AspectJExpressionPointcutAdvisor.class);
+		/*
+          此处获得advisor，由advisor来负责判断当前传入的bean是否需要被增强
+        */
+		List<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansForType(AspectJExpressionPointcutAdvisor.class);
 		for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+		    //advisor匹配
 			if (advisor.getPointcut().getClassFilter().matches(bean.getClass())) {
                 ProxyFactory advisedSupport = new ProxyFactory();
 				advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
@@ -49,6 +52,7 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
 	}
 
 	//初始化的时候 注入beanFactory
+    //在beanPostProcessor接口回调的时候 使用beanFactory的引用
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws Exception {
 		this.beanFactory = (AbstractBeanFactory) beanFactory;
