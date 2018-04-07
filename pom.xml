@@ -90,6 +90,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 关闭java doc插件
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -106,6 +107,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
 

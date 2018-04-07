@@ -28,8 +28,14 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
         Object bean = beanDefinition.getBean();
         if (bean == null) {
+            // do create bean
             bean = doCreateBean(beanDefinition);
+            // init
             bean = initializeBean(bean, name);
+
+            // 初始化后获得的bean 有可能是增强实现
+            // 所以在beanDefinition中更新为增强的bean
+
             beanDefinition.setBean(bean);
         }
         return bean;
@@ -40,6 +46,8 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     都传入进实现了BeanPostProcessor接口的实现类中，更新对象为process增强后的bean
     */
     protected Object initializeBean(Object bean, String name) throws Exception {
+        // 初始化的时候 调用BeanPostProcessor
+
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             //初始化之前
             bean = beanPostProcessor.postProcessBeforeInitialization(bean, name);
@@ -60,16 +68,21 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
         Constructor[] constructors = beanDefinition.getBeanClass().getConstructors();
         for (int i = 0; i < constructors.length; i++) {
-            if (constructors[i].isAnnotationPresent(AutoWired.class)) {
+            if (constructors[i].isAnnotationPresent(AutoWired.class) && ((AutoWired) constructors[i].getAnnotation(AutoWired.class)).required()
+                    ) {
                 List objs = new ArrayList();
                 for (Class clazz : constructors[i].getParameterTypes()) {
                     List beansForType = getBeansForType(clazz);
                     if (beansForType.size() == 1) {
                         objs.add(beansForType.get(0));
+                    } else {
+                        //存在两个及其以上的候选注入bean TODO 实现Qualifier
                     }
                 }
                 if (objs.size() == constructors[i].getParameterCount()) {
                     return constructors[i].newInstance(objs.toArray());
+                } else {
+                    throw new RuntimeException("构造注入缺少指定类型的bean");
                 }
             }
         }

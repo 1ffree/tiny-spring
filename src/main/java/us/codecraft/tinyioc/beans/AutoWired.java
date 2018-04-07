@@ -13,7 +13,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//此处Autowired 只适用在字段上
+//此处Autowired 只适用在字段注入 跟 构造注入
 
 @Target({ElementType.FIELD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
@@ -21,4 +21,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface AutoWired {
 
+    boolean required() default true;
 }

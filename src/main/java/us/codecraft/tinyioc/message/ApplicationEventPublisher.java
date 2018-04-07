@@ -8,7 +8,7 @@ package us.codecraft.tinyioc.message;
 public interface ApplicationEventPublisher {
     /**
      * 发布消息
-     * @param object
+     * @param object nothing
      */
     void publishEvent(Object object);
 }

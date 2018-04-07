@@ -13,6 +13,7 @@ import java.lang.reflect.Proxy;
  */
 public class JdkDynamicAopProxy extends AbstractAopProxy implements InvocationHandler {
 
+    // advisedSupport 调用实际方法前 调用hook方法 , 标明需要 拦截哪些方法
     public JdkDynamicAopProxy(AdvisedSupport advised) {
         super(advised);
     }
