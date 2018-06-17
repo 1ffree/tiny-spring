@@ -32,3 +32,9 @@ tiny-spring
 [60分钟徒手撸出Spring框架:土法造炮篇](https://segmentfault.com/l/1500000013061317?d=be83d672744f2f15b77bb40795505e4b)
 
 [60分钟徒手撸出Spring框架:高仿版](https://segmentfault.com/l/1500000013110630?d=a09ac8198372f552dc68c572b2b38664)
+
+## fork后的一些改动
+
+增加了EventListener AutoWired 等Spring常用注解
+
+增加了一些注释
