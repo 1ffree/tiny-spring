@@ -1,5 +1,6 @@
 package us.codecraft.tinyioc.aop;
 
+import net.sf.cglib.core.DebuggingClassWriter;
 import org.junit.Test;
 import us.codecraft.tinyioc.HelloWorldService;
 import us.codecraft.tinyioc.HelloWorldServiceImpl;
@@ -13,6 +14,11 @@ public class Cglib2AopProxyTest {
 
 	@Test
 	public void testInterceptor() throws Exception {
+
+	    //CGLib 导出生成类的class文件
+        System.setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "/tmp/cglib");
+
 		// --------- helloWorldService without AOP
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("tinyioc.xml");
 		HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
